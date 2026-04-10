@@ -132,7 +132,10 @@ We collect raw input, provider metadata, and extraction confidence. To create a 
 - **Gold Mines:** Low-confidence extractions that lead to approvals are prioritized for prompt iteration. 
 - **Hallucination Patterns:** High-confidence extractions that require human correction are flagged. 
 - **Tooling:** We use **LangSmith** to cluster these failures and automatically generate new test cases.
+  
   🔗 Hero Trace (Internal Logic):[Click here to view a live trace of the engine handling a complex Hinglish input with Luxury flags and Groq fallback.](https://smith.langchain.com/public/a200bba9-1714-4ba6-8f8f-d074d9cdda11/r)
+  
+  ![LangSmith Production Observability Traces](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/5005e53a56c8e59ba1e8eeb8da7bf3e832e70d9c/assets/Screenshot%202026-04-11%20000435.png)
 
 ### 2. Detecting Degradation
 We monitor for **Confidence Distribution Shifts** (average confidence dropping week-over-week) and **Ambiguity Rate Spikes**. Additionally, we track **Semantic Drift**; if similar customer intents start producing structurally different JSON outputs, it signals a model update or prompt regression that requires an immediate rollback.
