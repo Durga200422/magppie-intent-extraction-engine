@@ -1,0 +1,6 @@
+streamlit
+google-genai
+groq
+pydantic
+langsmith
+python-dotenv
