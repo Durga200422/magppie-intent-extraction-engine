@@ -1,3 +1,9 @@
+import sys
+import os
+
+# Add the current directory to sys.path so 'src' can be found
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import streamlit as st
 import time
 from src.extractor import extract_kitchen_intent
