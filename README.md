@@ -12,6 +12,7 @@ This system is a production-ready **Intent Extraction Pipeline** that converts u
 
 Beyond simple extraction, this implementation solves for real-world showroom complexities: **Hinglish code-switching**, **budget-unit normalization** (Lakh/Cr), and **security-first prompt engineering**. It is built with a "Builder Mindset"—a system that doesn't just fail when confused, but utilizes a **Human-in-the-Loop (HITL)** refinement loop to capture ground-truth data and improve over time.
 
+![Magppie AI Assistant Dashboard UI](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/bf645fea2a90fb71a5ca7acd86d4404d5980ce4d/assets/Screenshot%202026-04-10%20235449.png)
 ---
 
 ## 🧬 System Architecture & Data Flow
@@ -41,6 +42,8 @@ Rather than relying solely on LLM guardrails, we implement a hardened regex fire
 
 ### 4. HITL Refinement Flywheel
 When extraction confidence falls below 85%, the UI triggers a **"Refinement"** module. This allows the consultant to clarify details (e.g., "Make it L-shape instead"), which are then merged with the original input. This creates a loop where user corrections serve as high-fidelity labels for future model fine-tuning.
+
+![Human-in-the-Loop Refinement Interface](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/bf645fea2a90fb71a5ca7acd86d4404d5980ce4d/assets/Screenshot%202026-04-10%20235846.png)
 
 ### 5. Hinglish & Budget Intelligence
 Customers naturally code-switch. Our pipeline maps Hinglish semantics (e.g., *"Bana do kuch achha"* → `style: "elegant"`) and converts complex Indian budget strings (Lakhs/Cr/Ranges) into standardized integers.
@@ -115,6 +118,7 @@ LANGCHAIN_API_KEY = your_langsmith_key
 
 - **Case 3 (Ranges):** Input *"around 5 to 6 lakh"* is processed to extract the maximum (**600,000**) to ensure design feasibility.
 - **Case 4 (Hinglish):** Input *"Bana do kuch achha"* is semantically mapped to a high-quality style tier rather than failing as a translation error.
+  ![Hinglish Intent Extraction with Business Flags](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/bf645fea2a90fb71a5ca7acd86d4404d5980ce4d/assets/Screenshot%202026-04-11%20000219.png)
 - **Logical Contradictions:** If a user provides physically impossible requirements, the **confidence score** is penalized, and a specific note is added to the ambiguities section of the output.
 
 ---
@@ -122,11 +126,13 @@ LANGCHAIN_API_KEY = your_langsmith_key
 ## 🧠 Task 02: System Thinking
 
 ### 1. Data Collection & Improvement
+![Persistent Showroom Interaction History](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/bf645fea2a90fb71a5ca7acd86d4404d5980ce4d/assets/Screenshot%202026-04-11%20000304.png)
 We collect raw input, provider metadata, and extraction confidence. To create a **data flywheel**, we link these to **Showroom Outcomes** (design approval) and **User Refinement clicks**. 
 
 - **Gold Mines:** Low-confidence extractions that lead to approvals are prioritized for prompt iteration. 
 - **Hallucination Patterns:** High-confidence extractions that require human correction are flagged. 
 - **Tooling:** We use **LangSmith** to cluster these failures and automatically generate new test cases.
+  ![LangSmith Production Observability Traces](https://github.com/Durga200422/magppie-intent-extraction-engine/blob/bf645fea2a90fb71a5ca7acd86d4404d5980ce4d/assets/Screenshot%202026-04-11%20000435.png)
 
 ### 2. Detecting Degradation
 We monitor for **Confidence Distribution Shifts** (average confidence dropping week-over-week) and **Ambiguity Rate Spikes**. Additionally, we track **Semantic Drift**; if similar customer intents start producing structurally different JSON outputs, it signals a model update or prompt regression that requires an immediate rollback.
